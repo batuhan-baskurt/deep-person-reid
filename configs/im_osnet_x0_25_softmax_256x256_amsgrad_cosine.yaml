@@ -1,0 +1,36 @@
+model:
+  name: 'osnet_x0_25'
+  pretrained: True
+
+data:
+  type: 'image'
+  sources: ['APM']
+  targets: ['APM']
+  height: 256
+  width: 256
+  combineall: False
+  transforms: ['random_flip', 'color_jitter']
+  save_dir: 'log/osnet_x0_25_apm_softmax_cosine'
+
+loss:
+  name: 'softmax'
+  softmax:
+    label_smooth: True
+
+train:
+  optim: 'amsgrad'
+  lr: 0.003
+  max_epoch: 120
+  batch_size: 128
+  fixbase_epoch: 10
+  open_layers: ['classifier']
+  lr_scheduler: 'cosine'
+  stepsize: [60]
+
+test:
+  batch_size: 100
+  dist_metric: 'euclidean'
+  normalize_feature: False
+  evaluate: False
+  eval_freq: 20
+  rerank: False
